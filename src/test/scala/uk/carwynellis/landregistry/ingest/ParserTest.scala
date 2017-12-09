@@ -9,6 +9,7 @@ class ParserTest extends WordSpec with Matchers {
     "return a parsed line for a valid data file" in new SpecContext {
       val underTest = Parser(SingleLine)
 
+      // TODO - match on parsed result
       underTest.next() shouldBe defined
     }
   }
@@ -16,8 +17,12 @@ class ParserTest extends WordSpec with Matchers {
   trait SpecContext {
 
     // TODO - define resource path properly
-    val SingleLine = "csv-fixtures/single-line.csv"
+    val SingleLine = getResourcePath("/csv-fixtures/single-line.csv")
 
+    private def getResourcePath(path: String) = {
+      val r = getClass.getResource(path)
+      r.getPath
+    }
   }
 
 }
