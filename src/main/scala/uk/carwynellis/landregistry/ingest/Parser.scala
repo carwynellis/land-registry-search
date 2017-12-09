@@ -10,13 +10,16 @@ import uk.carwynellis.landregistry.model.{Address, PricePaidEntry}
   */
 class Parser(filePath: String) {
 
-  val reader = CSVReader.open(filePath)
+  private val reader = CSVReader.open(filePath)
+  private val iterator = reader.iterator
 
   def next(): Option[PricePaidEntry] = reader.readNext().map(convertValues)
 
+  def close(): Unit = reader.close()
+
   // TODO - conversion of list of values to instance might be nicer with shapeless...
-  private def convertValues(values: List[String]) = values match {
-    case List(id, price, timestamp, postcode, propertyType, newBuild, tenure, line1, line2, street, locality, town, district, county, _*) =>
+  private def convertValues(values: Seq[String]) = values match {
+    case Seq(id, price, timestamp, postcode, propertyType, newBuild, tenure, line1, line2, street, locality, town, district, county, _*) =>
       PricePaidEntry(
         id           = id,
         timestamp    = timestamp,
