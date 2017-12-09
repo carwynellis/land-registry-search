@@ -1,6 +1,6 @@
 # land-registry-search
 
-An excuse to play with elasticsearch over the holidays.
+Query land registry sold price data using elasticsearch.
 
 The intent is to ingest the land registry price paid data so that it can be
 queried in various ways.
