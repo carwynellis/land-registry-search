@@ -1,28 +1,24 @@
 package uk.carwynellis.landregistry.ingest
 
 import org.scalatest.{Matchers, WordSpec}
+import uk.carwynellis.landregistry.fixtures.PricePaidEntryFixtures
 
 class ParserTest extends WordSpec with Matchers {
 
   "Parser" should {
 
     "return a parsed line for a valid data file" in new SpecContext {
-      val underTest = Parser(SingleLine)
+      import PricePaidEntryFixtures.SingleLine._
 
-      // TODO - match on parsed result
-      underTest.next() shouldBe defined
+      val underTest = Parser(resourcePath)
+
+      underTest.next() shouldBe Some(entry)
     }
+
   }
 
   trait SpecContext {
-
-    // TODO - define resource path properly
-    val SingleLine = getResourcePath("/csv-fixtures/single-line.csv")
-
-    private def getResourcePath(path: String) = {
-      val r = getClass.getResource(path)
-      r.getPath
-    }
+    // TODO - remove if not required
   }
 
 }
