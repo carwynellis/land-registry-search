@@ -7,6 +7,7 @@ scalaVersion := "2.12.4"
 libraryDependencies ++= Seq(
   // Try Java client for now - could also use elastic4s
   "org.elasticsearch.client" %  "transport" % "6.0.1",
+  "com.github.tototoshi"     %% "scala-csv" % "1.3.5",
   "org.scalatest"            %% "scalatest" % "3.0.4" % "test"
 )
 
@@ -26,4 +27,4 @@ scalacOptions in (Compile, console) ~= (_.filterNot(Set(
   "-Ywarn-unused:imports",
   "-Xfatal-warnings"
 )))
-        
+
