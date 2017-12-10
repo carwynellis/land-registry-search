@@ -1,9 +1,10 @@
 package uk.carwynellis.landregistry
 
-import uk.carwynellis.landregistry.ingest.Parser
+import uk.carwynellis.landregistry.ingest.{IngestClient, Parser}
 import uk.carwynellis.landregistry.model.PricePaidEntry
 
 import scala.annotation.tailrec
+import uk.carwynellis.landregistry.serialization.JsonSerialization
 
 /**
   * Initial Ingest runner.
@@ -23,6 +24,14 @@ object Ingest {
 
     println(s"Ingesting file: $path")
 
+    val client = new IngestClient
+
+    def store(entry: PricePaidEntry): Unit = {
+      import JsonSerialization.toJson
+      val result = client.indexJson(entry.id, toJson(entry))
+      println(s"Got ingest result: $result")
+    }
+
     val parser = Parser(path)
 
     @tailrec
@@ -35,9 +44,7 @@ object Ingest {
         println(s"Finished")
     }
 
-    def store(entry: PricePaidEntry): Unit = {
-      println(s"Processing: $entry")
-    }
+
 
     loop()
 
