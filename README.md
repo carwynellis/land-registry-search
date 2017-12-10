@@ -16,3 +16,8 @@ queried in various ways.
 * Some sort of frontend?
 
 * Multi-mod project to separate ingest from query service
+
+* Logging
+
+* Config
+

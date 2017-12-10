@@ -2,19 +2,19 @@ package uk.carwynellis.landregistry.ingest
 
 import java.net.InetAddress
 
-import org.elasticsearch.action.index.IndexResponse
+import org.elasticsearch.action.bulk.BulkResponse
+import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.transport.TransportAddress
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.transport.client.PreBuiltTransportClient
+import uk.carwynellis.landregistry.ingest.IngestClient.BulkItem
 import uk.carwynellis.landregistry.serialization.JsonSerialization
 
 /**
   * Client providing ingest support for elasticsearch.
   *
   * Will start with trying the java api to see how far I can go with that.
-  *
-  * TODO - implement bulk api support for indexing
   */
 class IngestClient extends JsonSerialization {
 
@@ -26,10 +26,27 @@ class IngestClient extends JsonSerialization {
     // TODO - get this from config
     .addTransportAddress(new TransportAddress(InetAddress.getLoopbackAddress, 9300))
 
-  def indexJson(id: String, json: String): IndexResponse = {
+  def indexJson(id: String, json: String): IndexResponse =
+    createIndexRequest(id, json).get
+
+  def indexBulk(data: Seq[BulkItem]): BulkResponse = {
+    val requestBuilder = client.prepareBulk()
+
+    data foreach { item =>
+      requestBuilder.add(createIndexRequest(item.id, item.json))
+    }
+
+    requestBuilder.get
+  }
+
+  private def createIndexRequest(id: String, json: String): IndexRequestBuilder =
     client.prepareIndex(IndexName, TypeName, id)
       .setSource(json, XContentType.JSON)
-      .get()
-  }
+
+}
+
+object IngestClient {
+
+  case class BulkItem(id: String, json: String)
 
 }
