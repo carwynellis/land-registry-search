@@ -3,7 +3,7 @@ package uk.carwynellis.landregistry.ingest
 import org.scalatest.{Matchers, WordSpec}
 import uk.carwynellis.landregistry.fixtures.PricePaidEntryFixtures
 
-class ParserTest extends WordSpec with Matchers {
+class ParserSpec extends WordSpec with Matchers {
 
   "Parser" should {
 
