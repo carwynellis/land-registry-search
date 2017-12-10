@@ -2,11 +2,15 @@ package uk.carwynellis.landregistry.fixtures
 
 import uk.carwynellis.landregistry.model.{Address, PricePaidEntry}
 
+sealed trait PricePaidEntryFixture {
+  val resourcePath: String
+}
+
 trait PricePaidEntryFixtures {
 
-  object SingleLine {
+  object SingleLine extends PricePaidEntryFixture {
 
-    val resourcePath = getResourcePath("/csv-fixtures/single-line.csv")
+    override val resourcePath = getResourcePath("/csv-fixtures/single-line.csv")
 
     val entry = PricePaidEntry(
       id = "SOME_UNIQUE_ID",
@@ -26,6 +30,12 @@ trait PricePaidEntryFixtures {
         postcode = "AB12 3CD"
       )
     )
+  }
+
+  object MultiLine extends PricePaidEntryFixture {
+
+    override val resourcePath = getResourcePath("/csv-fixtures/multi-line.csv")
+
   }
 
   private def getResourcePath(path: String) = {
