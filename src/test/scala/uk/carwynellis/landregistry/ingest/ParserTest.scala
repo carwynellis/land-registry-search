@@ -13,6 +13,8 @@ class ParserTest extends WordSpec with Matchers {
       val underTest = Parser(resourcePath)
 
       underTest.next() shouldBe Some(entry)
+
+      underTest.close()
     }
 
   }

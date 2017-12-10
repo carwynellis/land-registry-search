@@ -9,7 +9,7 @@ trait PricePaidEntryFixtures {
     val resourcePath = getResourcePath("/csv-fixtures/single-line.csv")
 
     val entry = PricePaidEntry(
-      id = "{SOME_UNIQUE_ID}",
+      id = "SOME_UNIQUE_ID",
       price = "100000",
       timestamp = "2017-01-01 00:00",
       propertyType = "D",

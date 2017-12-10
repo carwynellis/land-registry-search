@@ -11,7 +11,6 @@ import uk.carwynellis.landregistry.model.{Address, PricePaidEntry}
 class Parser(filePath: String) {
 
   private val reader = CSVReader.open(filePath)
-  private val iterator = reader.iterator
 
   def next(): Option[PricePaidEntry] = reader.readNext().map(convertValues)
 
@@ -21,7 +20,7 @@ class Parser(filePath: String) {
   private def convertValues(values: Seq[String]) = values match {
     case Seq(id, price, timestamp, postcode, propertyType, newBuild, tenure, line1, line2, street, locality, town, district, county, _*) =>
       PricePaidEntry(
-        id           = id,
+        id           = parseId(id),
         timestamp    = timestamp,
         price        = price,
         propertyType = propertyType,
@@ -38,6 +37,13 @@ class Parser(filePath: String) {
           postcode = postcode
         )
       )
+  }
+
+  // ID value is wrapped in {} which should be removed.
+  private val bracesRegex = """[{}]""".r
+
+  private def parseId(id: String) = {
+    bracesRegex.replaceAllIn(id, "")
   }
 
 }
