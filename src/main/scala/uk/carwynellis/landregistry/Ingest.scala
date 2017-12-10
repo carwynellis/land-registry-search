@@ -8,8 +8,6 @@ import scala.annotation.tailrec
 
 /**
   * Initial Ingest runner.
-  *
-  * Just prints parsed rows for now.
   */
 object Ingest {
 

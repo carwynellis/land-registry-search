@@ -21,3 +21,5 @@ queried in various ways.
 
 * Config
 
+* Try using elastic4s
+
