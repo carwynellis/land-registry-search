@@ -1,5 +1,6 @@
 package uk.carwynellis.landregistry
 
+import org.apache.logging.log4j.scala.Logging
 import uk.carwynellis.landregistry.ingest.{IngestClient, Parser}
 import uk.carwynellis.landregistry.model.PricePaidEntry
 import uk.carwynellis.landregistry.serialization.JsonSerialization
@@ -9,7 +10,7 @@ import scala.annotation.tailrec
 /**
   * Initial Ingest runner.
   */
-object Ingest {
+object Ingest extends Logging {
 
   def main(args: Array[String]): Unit = {
     args match {
@@ -23,7 +24,7 @@ object Ingest {
     // TODO - make this configurable
     val BatchSize = 1000
 
-    println(s"Ingesting file: $path")
+    logger.info(s"Ingesting file: $path")
 
     val client = new IngestClient
 
@@ -31,14 +32,15 @@ object Ingest {
       import IngestClient.BulkItem
       import JsonSerialization.toJson
       val jsonBatch = entries.map(e => BulkItem(e.id, toJson(e)))
+
       // TODO - handle failed inserts...
       val response = client.indexBulk(jsonBatch)
 
       if (response.hasFailures) {
-        println(s"Batch of ${entries.size} had some failures")
+       logger.error(s"Batch of ${entries.size} had some failures")
       }
       else {
-        println(s"Indexed ${entries.size} entries successfully")
+        logger.info(s"Indexed ${entries.size} entries successfully")
       }
     }
 
@@ -48,7 +50,7 @@ object Ingest {
     def loop(): Unit = parser.nextBatch(BatchSize) match {
       case Nil =>
         parser.close()
-        println(s"Finished")
+        logger.info("File ingest completed")
       case entries =>
         store(entries)
         loop()

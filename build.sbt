@@ -5,15 +5,19 @@ version := "0.1"
 scalaVersion := "2.12.4"
 
 val circeVersion = "0.8.0"
+val log4jVersion = "2.10.0"
 
 libraryDependencies ++= Seq(
   // Try Java client for now - could also use elastic4s
-  "org.elasticsearch.client" %  "transport"     % "6.0.1",
-  "com.github.tototoshi"     %% "scala-csv"     % "1.3.5",
-  "io.circe"                 %% "circe-core"    % circeVersion,
-  "io.circe"                 %% "circe-generic" % circeVersion,
-  "io.circe"                 %% "circe-parser"  % circeVersion,
-  "org.scalatest"            %% "scalatest"     % "3.0.4" % "test"
+  "org.elasticsearch.client" %  "transport"       % "6.0.1",
+  "org.apache.logging.log4j" %  "log4j-api"       % log4jVersion,
+  "org.apache.logging.log4j" %  "log4j-core"      % log4jVersion,
+  "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0",
+  "com.github.tototoshi"     %% "scala-csv"       % "1.3.5",
+  "io.circe"                 %% "circe-core"      % circeVersion,
+  "io.circe"                 %% "circe-generic"   % circeVersion,
+  "io.circe"                 %% "circe-parser"    % circeVersion,
+  "org.scalatest"            %% "scalatest"       % "3.0.4" % "test"
 )
 
 scalacOptions ++= Seq(
